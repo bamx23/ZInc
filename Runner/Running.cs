@@ -10,7 +10,7 @@ namespace Runner
     {
         public List<VarObject> Var;
 
-        public ExprObject begin, end;
+        public List<ExprObject> Lines;
 
         public Runing()
         {
@@ -32,10 +32,14 @@ namespace Runner
         public void Run()
         {
             int Cur = 0;
-            while (true)
+            bool Err = false;
+            while (Cur <= Lines.Count() && (Err == false))
             {
-                //Cur.Do(Cur);
-                //Cur = Cur.next;
+                Err = (Lines[Cur].Do(ref Cur) != 0);
+            }
+            if (Err)
+            {
+                //Lines[Cur].Err;
             }
         }
     }
