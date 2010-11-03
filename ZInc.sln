@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZInt", "ZInt\ZInt.csproj", "{65990316-F65D-4C32-8D7E-5CD32D898705}"
+	ProjectSection(ProjectDependencies) = postProject
+		{44E36EA0-A83C-41A7-A2EE-714DF6DE14E5} = {44E36EA0-A83C-41A7-A2EE-714DF6DE14E5}
+		{06C43BA8-2225-4621-86B7-E776742BF63B} = {06C43BA8-2225-4621-86B7-E776742BF63B}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Experiments", "Experiments", "{CA848F53-8D01-449D-8197-9A2E84F60E08}"
 EndProject
@@ -12,14 +16,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Runner", "Experiments\DLLs\Runner\Runner.csproj", "{C8BD6AFC-0765-4C78-B34F-47DB2A16667D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PreComp", "PreComp\PreComp.csproj", "{06C43BA8-2225-4621-86B7-E776742BF63B}"
-	ProjectSection(ProjectDependencies) = postProject
-		{65990316-F65D-4C32-8D7E-5CD32D898705} = {65990316-F65D-4C32-8D7E-5CD32D898705}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Runner", "Runner\Runner.csproj", "{44E36EA0-A83C-41A7-A2EE-714DF6DE14E5}"
-	ProjectSection(ProjectDependencies) = postProject
-		{65990316-F65D-4C32-8D7E-5CD32D898705} = {65990316-F65D-4C32-8D7E-5CD32D898705}
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OverrideCall", "OverrideCall", "{1B778582-B26E-4D14-9C66-40F21C6EEDD8}"
 EndProject

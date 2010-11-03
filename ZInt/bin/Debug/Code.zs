@@ -1,3 +1,3 @@
-in(x,y)
-x = x + y
-out(x,y)
+in(x,y[0..x])
+y[0..x] = x
+out(y[0..x])

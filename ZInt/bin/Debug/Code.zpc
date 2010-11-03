@@ -1,3 +1,16 @@
-#1 in std ~0~ ~1~
-#2 calc ~0~ ~0~ ~1~ + 2 * =
-#3 out std ~0~
+#1 in std V0
+#1 temp T1
+#1 ifgo T1 <= V0 : 4 : 6
+#1 in std V1.(T1)
+#1 ifgo T1 <= V0 : 4 : 6
+#1 errasetemp T1
+#2 temp T1
+#2 ifgo T1 <= V0 : 9 : 11
+#2 calc V1.(T1) Vo
+#2 ifgo T1 <= V0 : 9 : 11
+#2 errasetemp T1
+#3 temp T1
+#3 ifgo T1 <= V0 : 14 : 16
+#3 out std V1.(T1)
+#3 ifgo T1 <= V0 : 14 : 16
+#3 errasetemp T1
