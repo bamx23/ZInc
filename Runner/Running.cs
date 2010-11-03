@@ -21,12 +21,13 @@ namespace Runner
         public string Test()
         {
             Var.Add(new VarInt(1));
-            ((VarInt)Var[0][5][10]).data = 5;
-            ((VarInt)Var[0][5][11]).data = 10;
+            ((VarInt)Var[0][5][2]).data = 10;
+            ((VarInt)Var[0][5][11]).data = 8;
             Var.Add(new VarDouble(1));
             //Var[1][5][3].ParseString(Var[0][5][11].ToStr());
+            DynVarObject V = new DynVarObject("0.5.11");
 
-            return Var[1][5][3].ToStr();
+            return V.Get(Var).ToStr();
         }
 
         public void Run()

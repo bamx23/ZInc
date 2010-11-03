@@ -1,0 +1,5 @@
+D:\01_Documents\ZInc\PreComp\bin\Release\PreComp.dll
+D:\01_Documents\ZInc\PreComp\bin\Release\PreComp.pdb
+D:\01_Documents\ZInc\PreComp\obj\Release\ResolveAssemblyReference.cache
+D:\01_Documents\ZInc\PreComp\obj\Release\PreComp.dll
+D:\01_Documents\ZInc\PreComp\obj\Release\PreComp.pdb

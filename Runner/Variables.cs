@@ -3,15 +3,11 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Runner
 {
-    public class SystemVars
-    {
-    
-    }
-
-    public class VarList
+   /* public class VarList
     {
         public List<VarObject> list;
         public string text;
@@ -35,19 +31,63 @@ namespace Runner
             dyn = false;
             Complete();
         }
+    }*/
+
+    public class Constants
+    {
+        
+        public const int DOUBLE = 2;
+        public const int STRING = 3;
+        public const int BOOL = 4;
     }
 
-    public class VarObject
+    public class CodeObject
     {
-        protected byte type;
-        public byte Type
+        public string Name;
+
+        protected short type;
+        public short Type
         {
             get
             {
                 return type;
             }
         }
+    }
 
+    public class DynVarObject : CodeObject
+    {
+        private string val;
+
+        public string Val
+        {
+            get
+            {
+                return val;
+            }
+        }
+
+        public VarObject Get(List<VarObject> L)
+        {
+            string regstr = @"\d+";
+            MatchCollection r = (new Regex(regstr)).Matches(val);
+
+            VarObject R = L[int.Parse(r[0].Value)];
+            for (int i = 1; i < r.Count; i++)
+                R = R[int.Parse(r[i].Value)];
+
+            return R;
+        }
+
+        public DynVarObject(string val)
+        {
+            this.val = val;
+            type = -1;
+        }
+    }
+
+    public class VarObject : CodeObject
+    {
         public List<VarObject> sub;
 
         protected int deep;
@@ -109,13 +149,20 @@ namespace Runner
             return 0.0;
         }
 
-        public virtual void Parse(string S) { }
+        public virtual bool ToBool()
+        {
+            return false;
+        }
+
+        public virtual void Parse(string S) 
+        {
+        }
 
         public VarObject()
         {
             sub = new List<VarObject>();
             sub.Add(this);
-            deep = 0;
+            deep = 1;
             type = 0;
         }
     }                   // type = 0
@@ -124,15 +171,43 @@ namespace Runner
     {
         public int data;
 
-        public VarInt()
-            : base()
+        public override VarObject NewOfType()
+        {
+            return new VarInt();
+        }
+
+        public override int ToInt()
+        {
+            return data;
+        }
+
+        public override double ToDouble()
+        {
+            return (double)data;
+        }
+
+        public override string ToStr()
+        {
+            return data.ToString();
+        }
+
+        public override bool ToBool()
+        {
+            return data != 0;
+        }
+
+        public override void Parse(string S)
+        {
+            data = int.Parse(S);
+        }
+
+        public VarInt(): base()
         {
             data = 0;
             type = 1;
         }
 
-        public VarInt(int Data)
-            : base()
+        public VarInt(int Data): base()
         {
             type = 1;
             data = Data;
@@ -143,15 +218,43 @@ namespace Runner
     {
         public double data;
 
-        public VarDouble()
-            : base()
+        public override VarObject NewOfType()
+        {
+            return new VarDouble();
+        }
+
+        public override int ToInt()
+        {
+            return (int)data;
+        }
+
+        public override double ToDouble()
+        {
+            return data;
+        }
+
+        public override string ToStr()
+        {
+            return data.ToString();
+        }
+
+        public override bool ToBool()
+        {
+            return data != 0.0;
+        }
+
+        public override void Parse(string S)
+        {
+            data = double.Parse(S);
+        }
+
+        public VarDouble() : base()
         {
             type = 2;
             data = 0;
         }
 
-        public VarDouble(int Data)
-            : base()
+        public VarDouble(int Data) : base()
         {
             type = 2;
             data = Data;
@@ -162,18 +265,100 @@ namespace Runner
     {
         public string data;
 
-        public VarString()
-            : base()
+        public override VarObject NewOfType()
+        {
+            return new VarString();
+        }
+
+        public override int ToInt()
+        {
+            return int.Parse(data);
+        }
+
+        public override double ToDouble()
+        {
+            return double.Parse(data);
+        }
+
+        public override string ToStr()
+        {
+            return data;
+        }
+
+        public override bool ToBool()
+        {
+            return (data != "" || data.ToUpper() == "TRUE");
+        }
+
+        public override void Parse(string S)
+        {
+            data = S;
+        }
+
+        public VarString() : base()
         {
             type = 3;
             data = "";
         }
 
-        public VarString(string Data)
-            : base()
+        public VarString(string Data) : base()
         {
             type = 3;
             data = Data;
         }
     }       // type = 3
+
+    public class VarBool : VarObject
+    {
+        bool data;
+
+        public override VarObject NewOfType()
+        {
+            return new VarBool();
+        }
+
+        public override bool ToBool()
+        {
+            return data;
+        }
+
+        public override int ToInt()
+        {
+            return data?1:0;
+        }
+
+        public override double ToDouble()
+        {
+            return data?1:0;
+        }
+
+        public override string ToStr()
+        {
+            return data?"TRUE":"FALSE";
+        }
+
+        public override void Parse(string S)
+        {
+            switch(S.ToUpper())
+            {
+                case "TRUE":
+                    data = true;
+                    return;
+                case "FALSE":
+                    data = false;
+                    return;
+            }
+        }
+
+        public VarBool() : base()
+        {
+            type = 4;
+        }
+
+        public VarBool(bool Data) : base()
+        {
+            type = 4;
+            data = Data;
+        }
+    }         // type = 4
 }

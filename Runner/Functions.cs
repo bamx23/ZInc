@@ -8,7 +8,7 @@ namespace Runner
 {
     public class ExprObject
     {
-        public List<VarObject> param;
+        public List<CodeObject> param;
 
         public string Err;
 
@@ -18,89 +18,80 @@ namespace Runner
             return 0;
         }
 
+        public virtual int Except(Exception e)
+        {
+            Err = e.Message;
+            return 1; 
+        }
+
         public ExprObject()
         {
         }
     }
 
-    public class FuncCalc : ExprObject
+    class ExprCalc : ExprObject
     {
-        public VarObject result;
-        public override int  Do(ref int Line)
+        public void Int()
         {
-            try
+            int R = 0;
+            Stack<int> S = new Stack<int>();
+            for (int i = 1; i < param.Count(); i++)
             {
-                if (result.Type == 1)
-                {
-                    ((VarString)result).data = "";
-                    foreach (VarObject V in param)
-                        ((VarString)result).data += V.ToStr();
-
-                    ;
-                    return base.Do(ref Line);
-                }
-
-                Stack<VarObject> S = new Stack<VarObject>();
-                foreach (VarObject V in param)
-                {
-
-                }
-                //Тут, например, польская запись.
-
-                return base.Do(ref Line);
-            }
-            catch (Exception e)
-            {
-                Err = e.Message;
-                return 1;
+                
             }
         }
-    }
 
-    public class FuncIGo : ExprObject
-    {
-        public int thn, els;
+        public void Strings()
+        {
+            string R = "";
+            for (int i = 1; i < param.Count(); i++)
+            {
+                R += ((VarObject)param[i]).ToStr();
+            }
+            ((VarString)param[0]).data = R;
+        }
+
+        public void Calc()
+        {
+            switch (param[0].Type)
+            {
+                case 1:
+                case 2:
+                case 3:
+                    Strings();
+                    return;
+            }
+        }
 
         public override int Do(ref int Line)
         {
             try
             {
-
-                bool R = true;
-                foreach (VarObject V in param)
-                {
-                    //R = R && V.ToBool();
-                    //Польская запись для булена :)
-                }
-
-                if (R)
-                    Line = thn;
-                else
-                    Line = els;
-
+                // CODE over here
                 return base.Do(ref Line);
             }
             catch (Exception e)
             {
-                Err = e.Message;
-                return 1;
+                return Except(e);
             }
         }
     }
 
-    public class FuncIn : ExprObject
-    {
-        public override int Do(ref int Line)
-        {
-            return base.Do(ref Line);
-        }
-    }
 
-    public class FuncOut : ExprObject
-    {
-        public override int Do(ref int Line)
-        {
-            return base.Do(ref Line);
-        }
-    }
+       
 }
+
+
+/* public override int Do(ref int Line)
+        {
+            try
+            {
+                // CODE over here
+                return base.Do(ref Line);
+            }
+            catch (Exception e)
+            {
+                return Except(e);
+            }
+        }
+*/
