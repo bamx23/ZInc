@@ -67,10 +67,15 @@ namespace Runner
             }
         }
 
-        public VarObject Get(List<VarObject> L)
+        public VarObject Get(List<VarObject> L, string v = "")
         {
-            string regstr = @"\d+";
-            MatchCollection r = (new Regex(regstr)).Matches(val);
+            string text = (v == "")?val:v;
+
+            Regex o = new Regex(@"\((?=[^\(]*\)).*?\)");
+            while (o.IsMatch(text))
+                text = o.Replace(text, Get(L, o.Match(text).Value.Trim('(',')')).ToStr(), 1);
+
+            MatchCollection r = (new Regex(@"\d+")).Matches(text);
 
             VarObject R = L[int.Parse(r[0].Value)];
             for (int i = 1; i < r.Count; i++)

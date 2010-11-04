@@ -17,15 +17,15 @@ namespace Runner
             Var = new List<VarObject>();
         }
 
-
         public string Test()
         {
             Var.Add(new VarInt(1));
-            ((VarInt)Var[0][5][2]).data = 10;
+            Var.Add(new VarInt(11));
+            Var.Add(new VarInt(5));
+            Var.Add(new VarInt(1));
             ((VarInt)Var[0][5][11]).data = 8;
-            Var.Add(new VarDouble(1));
-            //Var[1][5][3].ParseString(Var[0][5][11].ToStr());
-            DynVarObject V = new DynVarObject("0.5.11");
+
+            DynVarObject V = new DynVarObject("0.(2).((3))");
 
             return V.Get(Var).ToStr();
         }

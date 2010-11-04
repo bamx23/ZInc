@@ -33,7 +33,7 @@ namespace Runner
     {
         public void Int()
         {
-            int R = 0;
+            //int R = 0;
             Stack<int> S = new Stack<int>();
             for (int i = 1; i < param.Count(); i++)
             {

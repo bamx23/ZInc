@@ -1,0 +1,5 @@
+D:\01_Documents\ZInc\Experiments\ListMany\bin\Debug\ListMany.exe
+D:\01_Documents\ZInc\Experiments\ListMany\bin\Debug\ListMany.pdb
+D:\01_Documents\ZInc\Experiments\ListMany\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\01_Documents\ZInc\Experiments\ListMany\obj\x86\Debug\ListMany.exe
+D:\01_Documents\ZInc\Experiments\ListMany\obj\x86\Debug\ListMany.pdb
