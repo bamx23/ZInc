@@ -4,6 +4,7 @@ using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace Runner
 {
@@ -33,6 +34,8 @@ namespace Runner
         }
     }*/
 
+    
+
     public class Constants
     {
         
@@ -52,42 +55,6 @@ namespace Runner
             {
                 return type;
             }
-        }
-    }
-
-    public class DynVarObject : CodeObject
-    {
-        private string val;
-
-        public string Val
-        {
-            get
-            {
-                return val;
-            }
-        }
-
-        public VarObject Get(List<VarObject> L, string v = "")
-        {
-            string text = (v == "")?val:v;
-
-            Regex o = new Regex(@"\((?=[^\(]*\)).*?\)");
-            while (o.IsMatch(text))
-                text = o.Replace(text, Get(L, o.Match(text).Value.Trim('(',')')).ToStr(), 1);
-
-            MatchCollection r = (new Regex(@"\d+")).Matches(text);
-
-            VarObject R = L[int.Parse(r[0].Value)];
-            for (int i = 1; i < r.Count; i++)
-                R = R[int.Parse(r[i].Value)];
-
-            return R;
-        }
-
-        public DynVarObject(string val)
-        {
-            this.val = val;
-            type = -1;
         }
     }
 

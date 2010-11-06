@@ -9,16 +9,19 @@ using System.Windows.Forms;
 
 namespace ZInt
 {
-    public partial class FMain : Form
+    public partial class Console : Form
     {
-        public FMain()
+        public Console()
         {
             InitializeComponent();
+            Program.stdIO = new StdIO(textBox1, richTextBox1);
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void haltToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            button1.Text = Program.Run.Test();
+            Program.Run.Halt = false;
         }
+
+        
     }
 }
