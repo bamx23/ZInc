@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using PreComp;
 using Runner;
+using System.Threading;
 
 
 namespace ZInt
@@ -14,8 +15,11 @@ namespace ZInt
 
         public override void Out(string s)
         {
-            Output.Text += "<<" + s + "\n";
-            Output.Refresh();
+            lock (Output)
+            {
+                Output.Text += "<<" + s + "\n";
+                Output.Refresh();
+            }
         }
 
         //--------------------------------
@@ -25,16 +29,20 @@ namespace ZInt
 
         public override string In()
         {
-            WaitFor = true;
-            Input.Focus();
-
-            while (WaitFor)
+            string r = "";
+            lock (Input)
             {
-                Application.DoEvents();
-            }
+                WaitFor = true;
+                Input.Focus();
 
-            string r = Input.Text;
-            Input.Text = "";
+                while (WaitFor)
+                {
+                    Application.DoEvents();
+                }
+
+                r = Input.Text;
+                Input.Text = "";
+            }
             return r;
         }
 
@@ -50,12 +58,22 @@ namespace ZInt
         }
 
         //--------------------------------
+        private Thread T;
+        static object locker = new object();
 
         public StdIO(TextBox In, RichTextBox Out)
         {
             this.Input = In;
             this.Output = Out;
             In.KeyPress += this.KeyPress;
+        }
+
+        public StdIO(TextBox In, RichTextBox Out, Thread T)
+        {
+            this.Input = In;
+            this.Output = Out;
+            In.KeyPress += this.KeyPress;
+            this.T = T;
         }
     }
 

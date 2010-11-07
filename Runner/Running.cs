@@ -19,6 +19,8 @@ namespace Runner
         }
     }
 
+    public delegate void ProcessMessages();
+
     public class Runing
     {
         public List<VarObject> Var;
@@ -28,11 +30,13 @@ namespace Runner
         protected IO stdIO;
 
         public bool Halt = false;
+        public event ProcessMessages ProcMess;
 
         public List<ExprObject> Lines;
 
         public VarObject GetVar(string name)
         {
+            //Обнаружение скобок и рекуретный вызов GetVar() - заменяем все скобки их значениями
             if(name.IndexOf('(') != -1)
             {
                 Regex o = new Regex(@"\((?=[^\(]*\)).*?\)");
@@ -43,12 +47,14 @@ namespace Runner
                 }
                 catch (Exception e)
                 {
+                    //Обработка ошибок
                 }
             }
 
             MatchCollection r = (new Regex(@"\d+")).Matches(name);
             VarObject R;
 
+            //Разные типы переменных: V - обычный Var, T - темповая, P - параметр
             switch(name[0])
             {
                 case 'V':
@@ -77,13 +83,6 @@ namespace Runner
             }
         }
 
-        public Runing()
-        {
-            Var = new List<VarObject>();
-            Temp = new VarInt(0);
-            ParamCount = 0;
-        }
-
         public Runing(IO stdIO)
         {
             Var = new List<VarObject>();
@@ -92,27 +91,39 @@ namespace Runner
             this.stdIO = stdIO;
         }
 
-        public Runing(List<VarObject> Params)
+        public Runing(IO stdIO, List<VarObject> Params)
         {
             Var = new List<VarObject>();
             Temp = new VarInt(0);
             Param = Params;
             ParamCount = Params.Count;
+            this.stdIO = stdIO;
         }
 
-        public string Test()
+        public void Test()
         {
+            //Проверка работы переменных
             Var.Add(new VarInt(1));
             Var.Add(new VarInt(11));
-            stdIO.Out("Введите 5:");
+            stdIO.Out("Введите 5(число будет записано в V2):");
+            //Ввод данных \/ и вывод данных /\
             string s = stdIO.In();
             Var.Add(new VarInt(int.Parse(s)));
             Var.Add(new VarInt(1));
             ((VarInt)Var[0][5][11]).data = 8;
 
+            //Проверка event'а ProcMess
+            stdIO.Out("Идет проверка ProcMess()... подождите");
+            for (int i = 0; i < 10000000; i++)
+            {
+                s = i.ToString();
+                if(ProcMess != null)
+                    ProcMess();
+            }
+
             stdIO.Out("В переменной V0.(V2).(V(V3)): "+GetVar("V0.(V2).(V(V3))").ToStr());
 
-            return "DONE";
+            return;
         }
 
         public void Run()
@@ -122,6 +133,10 @@ namespace Runner
             while (Cur <= Lines.Count() && (Err == false))
             {
                 Err = (Lines[Cur].Do(ref Cur) != 0);
+
+                if (ProcMess != null)
+                    ProcMess();
+
                 if (Halt)
                     return;
             }

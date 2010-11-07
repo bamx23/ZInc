@@ -6,7 +6,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using System.IO;
+using PreComp;
+using Runner;
+using System.Threading;
 
 namespace ZInt
 {
@@ -15,14 +17,23 @@ namespace ZInt
         public FMain()
         {
             InitializeComponent();
-            Program.Cons = new Console();
+        }
+
+        static void ProcMess()
+        {
+            Application.DoEvents();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Program.Cons.Visible = true;
-            Program.Run = new Runner.Runing(Program.stdIO);
-            Program.Run.Test();
+            Console Cons = new Console();
+            Cons.Visible = true;
+
+            Runing Run = new Runing(Cons.stdIO);
+            Run.ProcMess += new ProcessMessages(ProcMess);
+            Thread T = new Thread(Run.Test);
+            Cons.T = T;
+            T.Start();
         }
 
         private void button2_Click(object sender, EventArgs e)
