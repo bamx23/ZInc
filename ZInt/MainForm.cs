@@ -8,7 +8,6 @@ using System.Text;
 using System.Windows.Forms;
 using PreComp;
 using Runner;
-using System.Threading;
 
 namespace ZInt
 {

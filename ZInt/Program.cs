@@ -4,7 +4,6 @@ using System.Linq;
 using System.Windows.Forms;
 using PreComp;
 using Runner;
-using System.Threading;
 
 
 namespace ZInt
@@ -66,7 +65,6 @@ namespace ZInt
             this.Input = In;
             this.Output = Out;
             In.KeyPress += this.KeyPress;
-            this.T = T;
         }
     }
 
