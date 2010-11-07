@@ -16,7 +16,7 @@ namespace ZInt
         public Console()
         {
             InitializeComponent();
-            stdIO = new StdIO(textBox1, richTextBox1, T);
+            stdIO = new StdIO(textBox1, richTextBox1);
         }
 
         private void haltToolStripMenuItem_Click(object sender, EventArgs e)

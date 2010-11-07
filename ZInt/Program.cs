@@ -60,12 +60,6 @@ namespace ZInt
             In.KeyPress += this.KeyPress;
         }
 
-        public StdIO(TextBox In, RichTextBox Out)
-        {
-            this.Input = In;
-            this.Output = Out;
-            In.KeyPress += this.KeyPress;
-        }
     }
 
     static class Program
