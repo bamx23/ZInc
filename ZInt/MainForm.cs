@@ -31,15 +31,12 @@ namespace ZInt
 
             Runing Run = new Runing(Cons.stdIO);
             Run.ProcMess += new ProcessMessages(ProcMess);
-            Thread T = new Thread(Run.Test);
-            Cons.T = T;
-            T.Start();
+            Run.Test();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Program.Cons.Visible = !Program.Cons.Visible;
-        }
+        } 
 
     }
 

@@ -24,7 +24,6 @@ namespace ZInt
 
         private void haltToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Program.Run.Halt = false;
         }
 
         private void restartToolStripMenuItem_Click(object sender, EventArgs e)

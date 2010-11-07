@@ -15,11 +15,8 @@ namespace ZInt
 
         public override void Out(string s)
         {
-            lock (Output)
-            {
-                Output.Text += "<<" + s + "\n";
-                Output.Refresh();
-            }
+             Output.Text += "<<" + s + "\n";
+             Output.Refresh();
         }
 
         //--------------------------------
@@ -30,8 +27,6 @@ namespace ZInt
         public override string In()
         {
             string r = "";
-            lock (Input)
-            {
                 WaitFor = true;
                 Input.Focus();
 
@@ -42,7 +37,6 @@ namespace ZInt
 
                 r = Input.Text;
                 Input.Text = "";
-            }
             return r;
         }
 
@@ -58,7 +52,6 @@ namespace ZInt
         }
 
         //--------------------------------
-        private Thread T;
         static object locker = new object();
 
         public StdIO(TextBox In, RichTextBox Out)
@@ -82,13 +75,6 @@ namespace ZInt
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-
-        static public Runing Run;
-        static public PreCompil Pre;
-
-        static public StdIO stdIO;
-
-        static public Console Cons;
 
         [STAThread]
         static void Main()
