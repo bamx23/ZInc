@@ -51,7 +51,6 @@ namespace ZInt
         }
 
         //--------------------------------
-        static object locker = new object();
 
         public StdIO(TextBox In, RichTextBox Out)
         {
@@ -59,7 +58,6 @@ namespace ZInt
             this.Output = Out;
             In.KeyPress += this.KeyPress;
         }
-
     }
 
     static class Program
