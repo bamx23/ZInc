@@ -13,8 +13,6 @@ namespace ZInt
     {
         public StdIO stdIO;
 
-        public Thread T;
-
         public Console()
         {
             InitializeComponent();
