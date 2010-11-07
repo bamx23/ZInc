@@ -3,12 +3,14 @@
 #1 in std V1.(T1)
 #1 inc T1 
 #1 ifgo T1 V0 <= ? 3 : 6
+#1 set T1 0
 #2 ifgo T1 V0 <= ? 7 : 9
-#2 calc V1.(T1) V0 =
+#2 set V1.(T1) V0
 #2 inc T1
 #2 ifgo T1 V0 <= ? 7 : 9
+#2 set T1 0
 #3 ifgo T1 V0 <= ? 11 : 13
-#3 out std V1.(T1) =
+#3 out std V1.(T1)
 #3 inc T1
 #3 ifgo T1 V0 <= ? 11 : 14
 #4 return
