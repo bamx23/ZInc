@@ -27,7 +27,7 @@ namespace Runner
         public VarInt Temp;
         protected List<VarObject> Param;
         protected int ParamCount;
-        protected IO stdIO;
+        public IO stdIO;
 
         public bool Halt = false;
         public event ProcessMessages ProcMess;
@@ -134,6 +134,9 @@ namespace Runner
             {
                 Err = (Lines[Cur].Do(ref Cur) != 0);
 
+                if (Cur == -1)
+                    return;
+
                 if (ProcMess != null)
                     ProcMess();
 
@@ -142,7 +145,7 @@ namespace Runner
             }
             if (Err)
             {
-                //Lines[Cur].Err;
+                stdIO.Out(Lines[Cur].Err);
             }
         }
     }

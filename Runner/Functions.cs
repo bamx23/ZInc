@@ -8,9 +8,15 @@ namespace Runner
 {
     public class ExprObject
     {
-        public List<CodeObject> param;
+        protected string name;
+        public string Name
+        {
+            get { return name; }
+        }
 
+        public List<string> param;
         public string Err;
+        protected Runing Prog;
 
         public virtual int Do(ref int Line)
         {
@@ -24,50 +30,34 @@ namespace Runner
             return 1; 
         }
 
-        public ExprObject()
+        public ExprObject(Runing Prog)
         {
+            this.Prog = Prog;
         }
     }
 
-    class ExprCalc : ExprObject
+    public class ExprSet : ExprObject
     {
-        public void Int()
-        {
-            //int R = 0;
-            Stack<int> S = new Stack<int>();
-            for (int i = 1; i < param.Count(); i++)
-            {
-                
-            }
-        }
-
-        public void Strings()
-        {
-            string R = "";
-            for (int i = 1; i < param.Count(); i++)
-            {
-                R += ((VarObject)param[i]).ToStr();
-            }
-            ((VarString)param[0]).data = R;
-        }
-
-        public void Calc()
-        {
-            switch (param[0].Type)
-            {
-                case 1:
-                case 2:
-                case 3:
-                    Strings();
-                    return;
-            }
-        }
-
         public override int Do(ref int Line)
         {
             try
             {
-                // CODE over here
+                VarObject V = Prog.GetVar(param[0]);
+                switch (V.Type)
+                {
+                    case 1:
+                        //Prog.GetVal(param[1],((VarInt)V).data);
+                        break;
+                    case 2:
+                        //Prog.GetVal(param[1],((VarDouble)V).data);
+                        break;
+                    case 3:
+                        //Prog.GetVal(param[1],((VarString)V).data);
+                        break;
+                    case 4:
+                        //Prog.GetVal(param[1],((VarBool)V).data);
+                        break;
+                }
                 return base.Do(ref Line);
             }
             catch (Exception e)
@@ -75,8 +65,144 @@ namespace Runner
                 return Except(e);
             }
         }
+
+        public ExprSet(Runing Prog) : base(Prog)
+        {
+            name = "set";
+        }
     }
 
+    public class ExprIn : ExprObject
+    {
+        public override int Do(ref int Line)
+        {
+            try
+            {
+                switch(param[0])
+                {
+                    case "std":
+                        for (int i = 1; i < param.Count(); i++)
+                            Prog.GetVar(param[i]).Parse(Prog.stdIO.In());
+                        break;
+                }
+                return base.Do(ref Line);
+            }
+            catch (Exception e)
+            {
+                return Except(e);
+            }
+        }
+
+        public ExprIn(Runing Prog) : base(Prog)
+        {
+            name = "in";
+        }
+    }
+
+    public class ExprOut : ExprObject
+    {
+        public override int Do(ref int Line)
+        {
+            try
+            {
+                string R = "", B = "";
+                for (int i = 1; i < param.Count(); i++)
+                {
+                    //Prog.GetVal(param[i],B);
+                    R += B;
+                }
+
+                switch (param[0])
+                {
+                    case "std":
+                        Prog.stdIO.Out(R);
+                        break;
+                }
+
+                return base.Do(ref Line);
+            }
+            catch (Exception e)
+            {
+                return Except(e);
+            }
+        }
+
+        public ExprOut(Runing Prog) : base(Prog)
+        {
+            name = "out";
+        }
+    }
+
+    public class ExprInc : ExprObject
+    {
+        public override int Do(ref int Line)
+        {
+            try
+            {
+                ((VarInt)Prog.GetVar(param[0])).data++;
+
+                return base.Do(ref Line);
+            }
+            catch (Exception e)
+            {
+                return Except(e);
+            }
+        }
+
+        public ExprInc(Runing Prog) : base(Prog)
+        {
+            name = "inc";
+        }
+    }
+
+    public class ExprIfgo : ExprObject
+    {
+        public override int Do(ref int Line)
+        {
+            try
+            {
+                bool check = false;
+                //Prog.GetVal(param[0],check);
+
+                if (check)
+                    Line = int.Parse(param[1]);
+                else
+                    Line = int.Parse(param[2]);
+
+                return 0;
+            }
+            catch (Exception e)
+            {
+                return Except(e);
+            }
+        }
+
+        public ExprIfgo(Runing Prog) : base(Prog)
+        {
+            name = "ifgo";
+        }
+    }
+
+    public class ExprReturn : ExprObject
+    {
+        public override int Do(ref int Line)
+        {
+            try
+            {
+                Line = -1;
+                return 0;
+            }
+            catch (Exception e)
+            {
+                return Except(e);
+            }
+        }
+
+        public ExprReturn(Runing Prog) : base(Prog)
+        {
+            name = "return";
+        }
+    }
 
        
 }
