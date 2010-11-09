@@ -34,6 +34,11 @@ namespace Runner
 
         public List<ExprObject> Lines;
 
+        /// <summary>
+        /// Ну по идее этот метод находит переменную по ее "адресу" или как там его
+        /// </summary>
+        /// <param name="name">строка в которой лежит эта самая переменная</param>
+        /// <returns>возвращает саму переменную</returns>
         public VarObject GetVar(string name)
         {
             //Обнаружение скобок и рекуретный вызов GetVar() - заменяем все скобки их значениями
@@ -82,6 +87,264 @@ namespace Runner
                     return null;
             }
         }
+        public int GetValInt(string name)
+        {
+            name = name.TrimStart('(');
+            name = name.TrimEnd(')');
+            return ParseString(name).ToInt();
+        } // "getVal второй параметр ссылка на переменную куда мы запишем результат" можно и так переделать это не сложно, если будет удобнее скажите, сделаю, ну или сами потужтесь
+        public bool GetValBool(string name)
+        {
+            name = name.TrimStart('(');
+            name = name.TrimEnd(')');
+            return ParseString(name).ToBool();
+        }
+        public double GetValDouble(string name)
+        {
+            name = name.TrimStart('(');
+            name = name.TrimEnd(')');
+            return ParseString(name).ToDouble();
+        }
+        public string GetValString(string name)
+        {
+            name = name.TrimStart('(');
+            name = name.TrimEnd(')');
+            return ParseString(name).ToStr();
+        }
+        /// <summary>
+        /// Самым непосредственным образом парсит строку записанную польской записью =)
+        /// </summary>
+        /// <param name="name">собственно сама строка, которую надо разбрать</param>
+        /// <returns></returns>
+        public VarObject ParseString(string name)
+        {
+            Stack<VarObject> operands = new Stack<VarObject>();
+            string[] literal = name.Split(' ');
+            foreach (string s in literal)
+            {
+                if (s[0] == 'V' || s[0] == 'P' || s[0] == 'T')
+                {
+                    try
+                    {
+                        operands.Push(GetVar(s));
+                    }
+                    catch (Exception e)
+                    {
+                    }
+                }
+                else
+                {
+                    ConvertToOneType(operands, s);
+                }
+            }
+            return operands.Pop();
+        }
+        /// <summary>
+        /// Этот метод приводит две переменные к одному типу, а потом колбасит их не по детски, и выполняет над ними операцию
+        /// </summary>
+        /// <param name="operands"> стек операндов текущего выражения</param>
+        /// <param name="operation">А это кстати строка в которой лежит текущая операция, подход не супер, но лучше чем ничего</param>
+        public void ConvertToOneType(Stack<VarObject> operands, string operation)
+        {
+            VarObject a, b;
+            VarBool operBool1, operBool2;
+            VarInt operInt1, operInt2;
+            VarDouble operDouble1, operDouble2;
+            VarString operString1, operString2;
+            b = operands.Pop(); // Тут важен порядок поп(б) поп(а) не наоборот, иначе со стрингами лажа: задом наперед стринги получаются =)
+            a = operands.Pop();
+            switch (Math.Max(a.Type, b.Type))
+            {
+                case Constants.BOOL:
+                    operBool1 = new VarBool(a.ToBool());
+                    operBool2 = new VarBool(b.ToBool());
+                    operands.Push(DoOperation(operBool1, operBool2, operation));
+                    break;
+                case Constants.INT:
+                    operInt1 = new VarInt(a.ToInt());
+                    operInt2 = new VarInt(b.ToInt());
+                    operands.Push(DoOperation(operInt1, operInt2, operation));
+                    break;
+                case Constants.DOUBLE:
+                    operDouble1 = new VarDouble(a.ToDouble());
+                    operDouble2 = new VarDouble(b.ToDouble());
+                    operands.Push(DoOperation(operDouble1, operDouble2, operation));
+                    break;
+                case Constants.STRING:
+                    operString1 = new VarString(a.ToStr());
+                    operString2 = new VarString(b.ToStr());
+                    operands.Push(DoOperation(operString1, operString2, operation));
+                    break;
+                default: // ololo Oshibka detected what to do now???? todolist!!!! oshibka oshibka( tut proishodit beg po krugu i kriki o pomoshi)
+                    break;
+            }
+        }
+        public VarObject DoOperation(VarInt a, VarInt b, string operation)
+        {
+            if (operation == "+" || operation == "-" || operation == "*" || operation == "/")
+                return DoArifmeticOperation(a, b, operation);
+            else
+                return DoLogicalOperation(a, b, operation);
+        }
+        public VarObject DoOperation(VarBool a, VarBool b, string operation)
+        {
+            if (operation == "+" || operation == "-" || operation == "*" || operation == "/")
+                return DoArifmeticOperation(a, b, operation);
+            else
+                return DoLogicalOperation(a, b, operation);
+        }
+        public VarObject DoOperation(VarDouble a, VarDouble b, string operation)
+        {
+            if (operation == "+" || operation == "-" || operation == "*" || operation == "/")
+                return DoArifmeticOperation(a, b, operation);
+            else
+                return DoLogicalOperation(a, b, operation);
+        }
+        public VarObject DoOperation(VarString a, VarString b, string operation)
+        {
+            if (operation == "+" || operation == "-" || operation == "*" || operation == "/")
+                return DoArifmeticOperation(a, b, operation);
+            else
+                return DoLogicalOperation(a, b, operation);
+        }
+
+        public VarInt DoArifmeticOperation(VarInt a, VarInt b, string operation)
+        {
+            switch (operation)
+            {
+                case "+":
+                    return a + b;
+                case "-":
+                    return a - b;
+                case "*":
+                    return a * b;
+                case "/":
+                    return a / b;
+                default:
+                    break;
+            }
+            return null;
+        }
+        public VarBool DoArifmeticOperation(VarBool a, VarBool b, string operation)
+        {
+            switch (operation)
+            {
+                case "+":
+                    return a + b;
+                case "-":
+                    return a - b;
+                case "*":
+                    return a * b;
+                case "/":
+                    return a / b;
+                default:
+                    break;
+            }
+            return null;
+        }
+        public VarDouble DoArifmeticOperation(VarDouble a, VarDouble b, string operation)
+        {
+            switch (operation)
+            {
+                case "+":
+                    return a + b;
+                case "-":
+                    return a - b;
+                case "*":
+                    return a * b;
+                case "/":
+                    return a / b;
+                default:
+                    break;
+            }
+            return null;
+        }
+        public VarString DoArifmeticOperation(VarString a, VarString b, string operation)
+        {
+            switch (operation)
+            {
+                case "+":
+                    return a + b;
+                case "-":
+                    return a - b;
+                case "*":
+                    return a * b;
+                case "/":
+                    return a / b;
+                default:
+                    break;
+            }
+            return null;
+        }
+
+        public VarBool DoLogicalOperation(VarInt a, VarInt b, string operation)
+        {
+            switch (operation)
+            {
+                case "<":
+                    return new VarBool(a < b);
+                case ">":
+                    return new VarBool(a > b);
+                case "<=":
+                    return new VarBool(a <= b);
+                case ">=":
+                    return new VarBool(a >= b);
+                default:
+                    break;
+            }
+            return null;
+        }
+        public VarBool DoLogicalOperation(VarBool a, VarBool b, string operation)
+        {
+            switch (operation)
+            {
+                case "<":
+                    return new VarBool(a < b);
+                case ">":
+                    return new VarBool(a > b);
+                case "<=":
+                    return new VarBool(a <= b);
+                case ">=":
+                    return new VarBool(a >= b);
+                default:
+                    break;
+            }
+            return null;
+        }
+        public VarBool DoLogicalOperation(VarDouble a, VarDouble b, string operation)
+        {
+            switch (operation)
+            {
+                case "<":
+                    return new VarBool(a < b);
+                case ">":
+                    return new VarBool(a > b);
+                case "<=":
+                    return new VarBool(a <= b);
+                case ">=":
+                    return new VarBool(a >= b);
+                default:
+                    break;
+            }
+            return null;
+        }
+        public VarBool DoLogicalOperation(VarString a, VarString b, string operation)
+        {
+            switch (operation)
+            {
+                case "<":
+                    return new VarBool(a < b);
+                case ">":
+                    return new VarBool(a > b);
+                case "<=":
+                    return new VarBool(a <= b);
+                case ">=":
+                    return new VarBool(a >= b);
+                default:
+                    break;
+            }
+            return null;
+        }
 
         public Runing(IO stdIO)
         {
@@ -103,9 +366,12 @@ namespace Runner
         public void Test()
         {
             //Проверка работы переменных
-            Var.Add(new VarInt(1));
+            Var.Add(new VarInt(3));
             Var.Add(new VarInt(11));
+            Var.Add(new VarString("Hello"));
+            Var.Add(new VarString(" World!"));
             stdIO.Out("Введите 5(число будет записано в V2):");
+            GetValInt("(V2 V3 +)");
             //Ввод данных \/ и вывод данных /\
             string s = stdIO.In();
             Var.Add(new VarInt(int.Parse(s)));
@@ -114,7 +380,7 @@ namespace Runner
 
             //Проверка event'а ProcMess
             stdIO.Out("Идет проверка ProcMess()... подождите");
-            for (int i = 0; i < 10000000; i++)
+            for (int i = 0; i < 10000000; i++) // Коля, а что это за цикл расскажи сне? =)
             {
                 s = i.ToString();
                 if(ProcMess != null)

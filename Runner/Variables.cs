@@ -36,12 +36,17 @@ namespace Runner
 
     
 
-    public class Constants
+    public static class Constants // наверное нужен статик, чтобы не нужно было обьявлять экземпляр класса, а просто обращаться Constants.BOOL к примеру, а еще я их местами слегка поменяю непротив? =)
     {
-        
+        /*
         public const int DOUBLE = 2;
         public const int STRING = 3;
-        public const int BOOL = 4;
+        public const int BOOL = 4;*/
+        public const int NULLTYPE = 0;
+        public const int BOOL = 1;
+        public const int INT = 2;
+        public const int DOUBLE = 3;
+        public const int STRING = 4;
     }
 
     public class CodeObject
@@ -135,10 +140,9 @@ namespace Runner
             sub = new List<VarObject>();
             sub.Add(this);
             deep = 1;
-            type = 0;
+            type = Constants.NULLTYPE;
         }
     }                   // type = 0
-
     public class VarInt : VarObject
     {
         public int data;
@@ -173,18 +177,51 @@ namespace Runner
             data = int.Parse(S);
         }
 
+        static public bool operator <(VarInt a, VarInt b) 
+        {
+            return a.data < b.data;
+        }
+        static public bool operator >(VarInt a, VarInt b)
+        {
+            return a.data > b.data;
+        }
+        static public bool operator <=(VarInt a, VarInt b)
+        {
+            return a.data <= b.data;
+        }
+        static public bool operator >=(VarInt a, VarInt b)
+        {
+            return a.data >= b.data;
+        }
+        static public VarInt operator +(VarInt a, VarInt b)
+        {
+            return new VarInt(a.data + b.data);
+        }
+        static public VarInt operator -(VarInt a, VarInt b)
+        {
+            return new VarInt(a.data - b.data);
+        }
+        static public VarInt operator *(VarInt a, VarInt b)
+        {
+            return new VarInt(a.data * b.data);
+        }
+        static public VarInt operator /(VarInt a, VarInt b)
+        {
+            return new VarInt( (int)(a.data / b.data) );
+        }
+
         public VarInt(): base()
         {
             data = 0;
-            type = 1;
+            type = Constants.INT;
         }
 
         public VarInt(int Data): base()
         {
-            type = 1;
+            type = Constants.INT;
             data = Data;
         }
-    }          // type = 1
+    }         
 
     public class VarDouble : VarObject
     {
@@ -220,18 +257,51 @@ namespace Runner
             data = double.Parse(S);
         }
 
+        static public bool operator <(VarDouble a, VarDouble b)
+        {
+            return a.data < b.data;
+        }
+        static public bool operator >(VarDouble a, VarDouble b)
+        {
+            return a.data > b.data;
+        }
+        static public bool operator <=(VarDouble a, VarDouble b)
+        {
+            return a.data <= b.data;
+        }
+        static public bool operator >=(VarDouble a, VarDouble b)
+        {
+            return a.data >= b.data;
+        }
+        static public VarDouble operator +(VarDouble a, VarDouble b)
+        {
+            return new VarDouble(a.data + b.data);
+        }
+        static public VarDouble operator -(VarDouble a, VarDouble b)
+        {
+            return new VarDouble(a.data - b.data);
+        }
+        static public VarDouble operator *(VarDouble a, VarDouble b)
+        {
+            return new VarDouble(a.data * b.data);
+        }
+        static public VarDouble operator /(VarDouble a, VarDouble b)
+        {
+            return new VarDouble(a.data / b.data);
+        }
+
         public VarDouble() : base()
         {
-            type = 2;
+            type = Constants.DOUBLE;
             data = 0;
         }
 
-        public VarDouble(int Data) : base()
+        public VarDouble(double Data) : base()
         {
-            type = 2;
+            type = Constants.DOUBLE;
             data = Data;
         }
-    }       // type = 2
+    }       
 
     public class VarString : VarObject
     {
@@ -244,7 +314,14 @@ namespace Runner
 
         public override int ToInt()
         {
-            return int.Parse(data);
+            try
+            {
+                return int.Parse(data);
+            }
+            catch (Exception e)
+            {
+                return data.Length;
+            }
         }
 
         public override double ToDouble()
@@ -267,18 +344,51 @@ namespace Runner
             data = S;
         }
 
+        static public bool operator <(VarString a, VarString b)
+        {
+            return a.data.Length < b.data.Length;
+        }
+        static public bool operator >(VarString a, VarString b)
+        {
+            return a.data.Length > b.data.Length;
+        }
+        static public bool operator <=(VarString a, VarString b)
+        {
+            return a.data.Length <= b.data.Length;
+        }
+        static public bool operator >=(VarString a, VarString b)
+        {
+            return a.data.Length >= b.data.Length;
+        }
+        static public VarString operator +(VarString a, VarString b) // string интерпретирует любую операцию как сложение, и в общем то что ему не пиши он все сложит =)
+        {
+            return new VarString(a.data + b.data);
+        }
+        static public VarString operator -(VarString a, VarString b)
+        {
+            return new VarString(a.data + b.data);
+        }
+        static public VarString operator *(VarString a, VarString b)
+        {
+            return new VarString(a.data + b.data);
+        }
+        static public VarString operator /(VarString a, VarString b)
+        {
+            return new VarString(a.data + b.data);
+        }
+
         public VarString() : base()
         {
-            type = 3;
+            type = Constants.STRING;
             data = "";
         }
 
         public VarString(string Data) : base()
         {
-            type = 3;
+            type = Constants.STRING;
             data = Data;
         }
-    }       // type = 3
+    }      
 
     public class VarBool : VarObject
     {
@@ -322,15 +432,48 @@ namespace Runner
             }
         }
 
+        static public bool operator <(VarBool a, VarBool b)
+        {
+            return a.data.ToString().Length < b.data.ToString().Length;
+        }
+        static public bool operator >(VarBool a, VarBool b)
+        {
+            return a.data.ToString().Length > b.data.ToString().Length;
+        }
+        static public bool operator <=(VarBool a, VarBool b)
+        {
+            return a.data.ToString().Length <= b.data.ToString().Length;
+        }
+        static public bool operator >=(VarBool a, VarBool b)
+        {
+            return a.data.ToString().Length >= b.data.ToString().Length;
+        }
+        static public VarBool operator +(VarBool a, VarBool b)
+        {
+            return new VarBool(a.data || b.data);
+        }
+        static public VarBool operator -(VarBool a, VarBool b)
+        {
+            return new VarBool(!(a.data || b.data));
+        }
+        static public VarBool operator *(VarBool a, VarBool b)
+        {
+            return new VarBool(a.data && b.data);
+        }
+        static public VarBool operator /(VarBool a, VarBool b)
+        {
+            return new VarBool(!(a.data && b.data));
+        }
+
         public VarBool() : base()
         {
-            type = 4;
+            type = Constants.BOOL;
         }
 
         public VarBool(bool Data) : base()
         {
-            type = 4;
+            type = Constants.BOOL;
             data = Data;
         }
-    }         // type = 4
+    }         
 }

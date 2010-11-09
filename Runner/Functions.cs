@@ -6,6 +6,16 @@ using System.Text;
 
 namespace Runner
 {
+    public class BinaryOperatorObj // оператор который принимает два значения и возвращает один, думаю надо инкапсулировать в класс, чтобы потом не было проблем с добавлением пользовательских операторов
+    { // Хотя в общем не знаю что сюда писать, так что оставлю пока так, напишу без этой мути, потом если что перепишу =)
+        public BinaryOperatorObj(string rhsName)
+        {
+            name = rhsName;
+        }
+        protected string name;
+        protected string param1;
+        protected string param2;
+    }
     public class ExprObject
     {
         protected string name;
@@ -38,7 +48,7 @@ namespace Runner
 
     public class ExprSet : ExprObject
     {
-        public override int Do(ref int Line)
+        public override int Do(ref int Line) // Коля, а чего у тебя только інт возвращается? а если нужен дабл
         {
             try
             {
@@ -83,6 +93,8 @@ namespace Runner
                     case "std":
                         for (int i = 1; i < param.Count(); i++)
                             Prog.GetVar(param[i]).Parse(Prog.stdIO.In());
+                        break;
+                    default: // Here will be some code i think
                         break;
                 }
                 return base.Do(ref Line);
