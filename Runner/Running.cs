@@ -89,26 +89,27 @@ namespace Runner
         }
         public int GetValInt(string name)
         {
-            name = name.TrimStart('(');
-            name = name.TrimEnd(')');
+            name = name.Trim('(', ')');
             return ParseString(name).ToInt();
         } // "getVal второй параметр ссылка на переменную куда мы запишем результат" можно и так переделать это не сложно, если будет удобнее скажите, сделаю, ну или сами потужтесь
         public bool GetValBool(string name)
         {
-            name = name.TrimStart('(');
-            name = name.TrimEnd(')');
+            name = name.Trim('(', ')'); // Семен, так проще))
             return ParseString(name).ToBool();
         }
         public double GetValDouble(string name)
         {
-            name = name.TrimStart('(');
-            name = name.TrimEnd(')');
+            name = name.Trim('(', ')');
             return ParseString(name).ToDouble();
         }
         public string GetValString(string name)
         {
-            name = name.TrimStart('(');
-            name = name.TrimEnd(')');
+            //name = name.Trim('(', ')'); // Плохо! В (V1.(V2)) -> V1.(V2 =)
+            if (name[0] == '(')
+            {
+                name = name.Remove(0, 1);
+                name = name.Remove(name.Length - 1, 1);
+            }
             return ParseString(name).ToStr();
         }
         /// <summary>
@@ -368,24 +369,33 @@ namespace Runner
             //Проверка работы переменных
             Var.Add(new VarInt(3));
             Var.Add(new VarInt(11));
-            Var.Add(new VarString("Hello"));
-            Var.Add(new VarString(" World!"));
+            
             stdIO.Out("Введите 5(число будет записано в V2):");
-            GetValInt("(V2 V3 +)");
+            
             //Ввод данных \/ и вывод данных /\
             string s = stdIO.In();
             Var.Add(new VarInt(int.Parse(s)));
             Var.Add(new VarInt(1));
+            Var.Add(new VarString("Hello"));
+            Var.Add(new VarString(" World!"));
+            GetValInt("(V1 V3 +)");
             ((VarInt)Var[0][5][11]).data = 8;
 
+            ExprOut E = new ExprOut(this);
+
+            E.param.Add("std"); E.param.Add("(V2 V3 +)");
+            //E.param.Add("(V2 V3 +)");
+            int L = 0;
+            L = E.Do(ref L);
+
             //Проверка event'а ProcMess
-            stdIO.Out("Идет проверка ProcMess()... подождите");
+            /*stdIO.Out("Идет проверка ProcMess()... подождите");
             for (int i = 0; i < 10000000; i++) // Коля, а что это за цикл расскажи сне? =)
             {
                 s = i.ToString();
                 if(ProcMess != null)
                     ProcMess();
-            }
+            }*/
 
             stdIO.Out("В переменной V0.(V2).(V(V3)): "+GetVar("V0.(V2).(V(V3))").ToStr());
 

@@ -43,29 +43,30 @@ namespace Runner
         public ExprObject(Runing Prog)
         {
             this.Prog = Prog;
+            param = new List<string>();
         }
     }
 
     public class ExprSet : ExprObject
     {
-        public override int Do(ref int Line) // Коля, а чего у тебя только інт возвращается? а если нужен дабл
+        public override int Do(ref int Line) // Коля, а чего у тебя только інт возвращается? а если нужен дабл // Где?)) Это номер строки
         {
             try
             {
                 VarObject V = Prog.GetVar(param[0]);
                 switch (V.Type)
                 {
-                    case 1:
-                        //Prog.GetVal(param[1],((VarInt)V).data);
+                    case Constants.INT:
+                        ((VarInt)V).data = Prog.GetValInt(param[1]);
                         break;
-                    case 2:
-                        //Prog.GetVal(param[1],((VarDouble)V).data);
+                    case Constants.DOUBLE:
+                        ((VarDouble)V).data = Prog.GetValDouble(param[1]);
                         break;
-                    case 3:
-                        //Prog.GetVal(param[1],((VarString)V).data);
+                    case Constants.STRING:
+                        ((VarString)V).data = Prog.GetValString(param[1]);
                         break;
-                    case 4:
-                        //Prog.GetVal(param[1],((VarBool)V).data);
+                    case Constants.BOOL:
+                        ((VarBool)V).data = Prog.GetValBool(param[1]);
                         break;
                 }
                 return base.Do(ref Line);
@@ -94,7 +95,7 @@ namespace Runner
                         for (int i = 1; i < param.Count(); i++)
                             Prog.GetVar(param[i]).Parse(Prog.stdIO.In());
                         break;
-                    default: // Here will be some code i think
+                    default: // Here will be some code i think - Really?
                         break;
                 }
                 return base.Do(ref Line);
@@ -117,12 +118,9 @@ namespace Runner
         {
             try
             {
-                string R = "", B = "";
+                string R = "";
                 for (int i = 1; i < param.Count(); i++)
-                {
-                    //Prog.GetVal(param[i],B);
-                    R += B;
-                }
+                    R += Prog.GetValString(param[i]);
 
                 switch (param[0])
                 {
@@ -173,10 +171,7 @@ namespace Runner
         {
             try
             {
-                bool check = false;
-                //Prog.GetVal(param[0],check);
-
-                if (check)
+                if (Prog.GetValBool(param[0]))
                     Line = int.Parse(param[1]);
                 else
                     Line = int.Parse(param[2]);

@@ -392,7 +392,7 @@ namespace Runner
 
     public class VarBool : VarObject
     {
-        bool data;
+        public bool data;
 
         public override VarObject NewOfType()
         {
