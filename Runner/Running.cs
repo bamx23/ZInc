@@ -89,17 +89,29 @@ namespace Runner
         }
         public int GetValInt(string name)
         {
-            name = name.Trim('(', ')');
+            if (name[0] == '(')
+            {
+                name = name.Remove(0, 1);
+                name = name.Remove(name.Length - 1, 1);
+            }
             return ParseString(name).ToInt();
         } // "getVal второй параметр ссылка на переменную куда мы запишем результат" можно и так переделать это не сложно, если будет удобнее скажите, сделаю, ну или сами потужтесь
         public bool GetValBool(string name)
         {
-            name = name.Trim('(', ')'); // Семен, так проще))
+            if (name[0] == '(')
+            {
+                name = name.Remove(0, 1);
+                name = name.Remove(name.Length - 1, 1);
+            }
             return ParseString(name).ToBool();
         }
         public double GetValDouble(string name)
         {
-            name = name.Trim('(', ')');
+            if (name[0] == '(')
+            {
+                name = name.Remove(0, 1);
+                name = name.Remove(name.Length - 1, 1);
+            }
             return ParseString(name).ToDouble();
         }
         public string GetValString(string name)
