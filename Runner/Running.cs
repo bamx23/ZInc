@@ -150,7 +150,39 @@ namespace Runner
                 }
                 else
                 {
-                    ConvertToOneType(operands, s);
+                    if (s == "+" || s == "-" || s == "*" || s == "/" ||
+                        s == "==" || s == "<" || s == "<=" || s == ">" || s == ">=")
+                        ConvertToOneType(operands, s);
+                    else
+                    {
+                        if (s[0] == '\'' && s[s.Length - 1] == '\'')
+                        {
+                            operands.Push(new VarString(s.Trim('\'', '\'')));
+                            continue;
+                        }
+                        if (s[0] == '\"' && s[s.Length - 1] == '\"')
+                        {
+                            operands.Push(new VarString(s.Trim('\"', '\"')));
+                            continue;
+                        }
+                        if (s == "true" || s == "false")
+                        {
+                            operands.Push(new VarBool(bool.Parse(s)));
+                            continue;
+                        }
+                        double dNum;
+                        int lNum;
+                        if (double.TryParse(s, out dNum))
+                        {
+                            operands.Push(new VarDouble(dNum));
+                            continue;
+                        }
+                        if (int.TryParse(s, out lNum))
+                        {
+                            operands.Push(new VarInt(lNum));
+                            continue;
+                        }
+                    }
                 }
             }
             return operands.Pop();
