@@ -207,9 +207,9 @@ namespace Runner
             try
             {
                 if (Prog.GetValBool(param[0]))
-                    Line = int.Parse(param[1]);
+                    Line = int.Parse(param[1]) -1;
                 else
-                    Line = int.Parse(param[2]);
+                    Line = int.Parse(param[2]) -1;
 
                 return 0;
             }
@@ -257,6 +257,54 @@ namespace Runner
         public ExprReturn(Runing Prog) : base(Prog)
         {
             name = "return";
+        }
+    }
+
+    public class ExprNew : ExprObject
+    {
+        public override int Do(ref int Line)
+        {
+            try
+            {
+                VarObject V;
+                switch (param[0])
+                {
+                    case "int":
+                        V = new VarInt();
+                        break;
+                    case "double":
+                        V = new VarDouble();
+                        break;
+                    case "string":
+                        V = new VarString();
+                        break;
+                    case "bool":
+                        V = new VarBool();
+                        break;
+                    default:
+                        V = new VarObject();
+                        break;
+                }
+                Prog.Var.Add(V);
+                return base.Do(ref Line);
+            }
+            catch (Exception e)
+            {
+                return Except(e);
+            }
+        }
+
+        public ExprNew(Runing Prog)
+            : base(Prog)
+        {
+            name = "new";
+        }
+
+        public override ExprObject Clone(Runing Prog, List<string> Param)
+        {
+            ExprNew e = new ExprNew(Prog);
+            e.param = Param;
+            return e;
         }
     }
 

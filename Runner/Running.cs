@@ -472,6 +472,7 @@ namespace Runner
             Expressions.Add(new ExprIfgo(null));
             Expressions.Add(new ExprSet(null));
             Expressions.Add(new ExprReturn(null));
+            Expressions.Add(new ExprNew(this));
         }
 
         public void Run()
@@ -484,12 +485,6 @@ namespace Runner
                 Err = (Lines[Cur].Do(ref Cur) != 0);
 
                 if (Cur == -1)
-                    return;
-
-                if (ProcMess != null)
-                    ProcMess();
-
-                if (Halt)
                     return;
             }
             if (Err)
