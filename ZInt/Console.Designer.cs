@@ -66,20 +66,20 @@
             this.haltToolStripMenuItem,
             this.restartToolStripMenuItem});
             this.programToolStripMenuItem.Name = "programToolStripMenuItem";
-            this.programToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
+            this.programToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
             this.programToolStripMenuItem.Text = "Program";
             // 
             // haltToolStripMenuItem
             // 
             this.haltToolStripMenuItem.Name = "haltToolStripMenuItem";
-            this.haltToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
+            this.haltToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.haltToolStripMenuItem.Text = "Stop";
             this.haltToolStripMenuItem.Click += new System.EventHandler(this.haltToolStripMenuItem_Click);
             // 
             // restartToolStripMenuItem
             // 
             this.restartToolStripMenuItem.Name = "restartToolStripMenuItem";
-            this.restartToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
+            this.restartToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.restartToolStripMenuItem.Text = "Restart";
             this.restartToolStripMenuItem.Click += new System.EventHandler(this.restartToolStripMenuItem_Click);
             // 
@@ -103,6 +103,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Console";
             this.Text = "ZInt - Console";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Console_FormClosed);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
