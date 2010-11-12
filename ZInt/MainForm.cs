@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using PreComp;
 using Runner;
+using System.Threading;
 
 namespace ZInt
 {
@@ -45,8 +46,9 @@ namespace ZInt
 
             Runing Run = new Runing(Cons.stdIO,sCode.Split('\n').ToList<string>());
             Run.ProcMess += new ProcessMessages(ProcMess);
-            Run.Run();
-            //Run.Test();
+            Thread T = new Thread(Run.Run);
+            Cons.CurThread = T;
+            T.Start();
         }
 
         private void button2_Click(object sender, EventArgs e)
