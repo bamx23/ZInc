@@ -52,6 +52,7 @@
             this.MaximizeBox = false;
             this.Name = "FMain";
             this.Text = "Zinc Interpretator";
+            this.Load += new System.EventHandler(this.FMain_Load);
             this.ResumeLayout(false);
 
         }

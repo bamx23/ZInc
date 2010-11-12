@@ -40,9 +40,7 @@ namespace ZInt
         {
             if (e.KeyChar == (char)13)
             {
-                Input.Enabled = false;
-                Output.Text += ">>" + Input.Text + "\n";
-                
+                              
                 WaitFor = false;
             }
         }
@@ -61,15 +59,24 @@ namespace ZInt
 
         private delegate bool BoolDelegate();
 
+        private bool InFocusDo()
+        {
+            Input.Enabled = true;
+            Input.Focus();
+            return true;
+        }
+
         private void InFocus()
         {
             if (Input.InvokeRequired)
             {
-                Input.Invoke(new BoolDelegate(Input.Focus));
+                Input.Invoke(new BoolDelegate(InFocusDo));
             }
             else
             {
+                Input.Enabled = true;
                 Input.Focus();
+                Input.Enabled = true;
             }
         }
 
@@ -80,6 +87,8 @@ namespace ZInt
         private string GetInputText()
         {
             string strText = Input.Text;
+            Input.Enabled = false;
+            Output.Text += ">>" + Input.Text + "\n";
             Input.Text = "";
             return strText;
         }
@@ -95,6 +104,8 @@ namespace ZInt
             else
             {
                 strText = Input.Text;
+                Input.Enabled = false;
+                Output.Text += ">>" + Input.Text + "\n";
                 Input.Text = "";
             }
             return strText;

@@ -45,13 +45,13 @@ namespace Runner
         public VarObject GetVar(string name)
         {
             //Обнаружение скобок и рекуретный вызов GetVar() - заменяем все скобки их значениями
-            if (name.IndexOf('(') != -1)
+            if (name.IndexOf('[') != -1)
             {
-                Regex o = new Regex(@"\((?=[^\(]*\)).*?\)");
+                Regex o = new Regex(@"\[(?=[^\[]*\]).*?\]");
                 try
                 {
                     while (o.IsMatch(name))
-                        name = o.Replace(name, GetVar(o.Match(name).Value.Trim('(', ')')).ToStr(), 1);
+                        name = o.Replace(name, GetVar(o.Match(name).Value.Trim('[', ']')).ToStr(), 1);
                 }
                 catch (Exception e)
                 {
