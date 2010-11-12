@@ -183,6 +183,11 @@ namespace Runner
                             operands.Push(new VarInt(lNum));
                             continue;
                         }
+                        if (s[0] == '\"')
+                        {
+                            operands.Push(new VarString(s));
+                            continue;
+                        }
                     }
                 }
             }
