@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using System.Text;
+using System.IO;
 using System.Text.RegularExpressions;
 
 namespace Runner
@@ -460,6 +461,28 @@ namespace Runner
             Source = lSource;
             Param = Params;
             ParamCount = Params.Count;
+            this.stdIO = stdIO;
+        }
+
+        public Runing(IO stdIO, string fSource)
+        {
+            Var = new List<VarObject>();
+            Temp = new VarInt(0);
+            FormExprList();
+            Source = File.ReadAllLines(fSource).ToList<string>();
+            Param = new List<VarObject>();
+            ParamCount = Param.Count;
+            this.stdIO = stdIO;
+        }
+
+        public Runing(IO stdIO, string fSource, List<VarObject> Params)
+        {
+            Var = new List<VarObject>();
+            Temp = new VarInt(0);
+            FormExprList();
+            Source = File.ReadAllLines(fSource).ToList<string>();
+            Param = Params;
+            ParamCount = Param.Count;
             this.stdIO = stdIO;
         }
 
