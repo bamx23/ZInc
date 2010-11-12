@@ -45,13 +45,13 @@ namespace Runner
         public VarObject GetVar(string name)
         {
             //Обнаружение скобок и рекуретный вызов GetVar() - заменяем все скобки их значениями
-            if (name.IndexOf('(') != -1)
+            if (name.IndexOf('[') != -1)
             {
-                Regex o = new Regex(@"\((?=[^\(]*\)).*?\)");
+                Regex o = new Regex(@"\[(?=[^\[]*\]).*?\]");
                 try
                 {
                     while (o.IsMatch(name))
-                        name = o.Replace(name, GetVar(o.Match(name).Value.Trim('(', ')')).ToStr(), 1);
+                        name = o.Replace(name, GetVar(o.Match(name).Value.Trim('[', ']')).ToStr(), 1);
                 }
                 catch (Exception e)
                 {
@@ -500,7 +500,7 @@ namespace Runner
 
             foreach (string s in Source)
             {
-                Regex o = new Regex(@"(\(.+?\))|(\'.{1}?\')|(\"".*?\"")|([\w=<>]+)");
+                Regex o = new Regex(@"([\w=<>]+?\.\[.+?\])|(\(.+?\))|(\'.{1}?\')|(\"".*?\"")|([\w=<>]+)");
                 //RegExp, который выделяет выражения в скобках, в одинарных и двойных кавычках, а оставшееся делит на слова (которые состоят из букав и = < >)
 
                 MatchCollection r = o.Matches(s);

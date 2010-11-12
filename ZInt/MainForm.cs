@@ -32,20 +32,20 @@ namespace ZInt
             string sCode = "#0 new int\n" +
                 "#0 new int\n" +
                 "#1 in std V0\n"+
-                "#1 ifgo (T1 V0 <=) 5 8\n"+
-                "#1 in std V1.(T1)\n"+
+                "#1 ifgo (T1 V0 <) 5 8\n"+
+                "#1 in std V1.[T1]\n"+
                 "#1 inc T1\n"+
-                "#1 ifgo (T1 V0 <=) 5 8\n"+
+                "#1 ifgo (T1 V0 <) 5 8\n"+
                 "#1 set T1 0\n"+
-                "#2 ifgo (T1 V0 <=) 10 13\n"+
-                "#2 set V1.(T1) V0\n"+
+                "#2 ifgo (T1 V0 <) 10 13\n"+
+                "#2 set V1.[T1] (V1.[T1] V0 +)\n"+
                 "#2 inc T1\n"+
-                "#2 ifgo (T1 V0 <=) 10 13\n"+
+                "#2 ifgo (T1 V0 <) 10 13\n"+
                 "#2 set T1 0\n"+
-                "#3 ifgo (T1 V0 <=) 15 18\n"+
-                "#3 out std V1.(T1)\n"+
-                "#3 inc T1"+
-                "#3 ifgo (T1 V0 <=) 15 18\n"+
+                "#3 ifgo (T1 V0 <) 15 18\n"+
+                "#3 out std V1.[T1]\n"+
+                "#3 inc T1\n"+
+                "#3 ifgo (T1 V0 <) 15 18\n"+
                 "#4 return";
 
             Runing Run = new Runing(Cons.stdIO,sCode.Split('\n').ToList<string>());
@@ -58,6 +58,11 @@ namespace ZInt
         private void button2_Click(object sender, EventArgs e)
         {
             
+        }
+
+        private void FMain_Load(object sender, EventArgs e)
+        {
+
         } 
 
     }
