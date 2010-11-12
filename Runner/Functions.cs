@@ -34,6 +34,13 @@ namespace Runner
             return 0;
         }
 
+        public virtual ExprObject Clone(Runing Prog, List<string> Param)
+        {
+            ExprObject e =  new ExprObject(Prog);
+            e.param = Param;
+            return e;
+        }
+
         public virtual int Except(Exception e)
         {
             Err = e.Message;
@@ -77,6 +84,13 @@ namespace Runner
             }
         }
 
+        public override ExprObject Clone(Runing Prog, List<string> Param)
+        {
+            ExprSet e = new ExprSet(Prog);
+            e.param = Param;
+            return e;
+        }
+        
         public ExprSet(Runing Prog) : base(Prog)
         {
             name = "set";
@@ -104,6 +118,13 @@ namespace Runner
             {
                 return Except(e);
             }
+        }
+
+        public override ExprObject Clone(Runing Prog, List<string> Param)
+        {
+            ExprIn e = new ExprIn(Prog);
+            e.param = Param;
+            return e;
         }
 
         public ExprIn(Runing Prog) : base(Prog)
@@ -137,6 +158,13 @@ namespace Runner
             }
         }
 
+        public override ExprObject Clone(Runing Prog, List<string> Param)
+        {
+            ExprOut e = new ExprOut(Prog);
+            e.param = Param;
+            return e;
+        }
+
         public ExprOut(Runing Prog) : base(Prog)
         {
             name = "out";
@@ -157,6 +185,13 @@ namespace Runner
             {
                 return Except(e);
             }
+        }
+
+        public override ExprObject Clone(Runing Prog, List<string> Param)
+        {
+            ExprInc e = new ExprInc(Prog);
+            e.param = Param;
+            return e;
         }
 
         public ExprInc(Runing Prog) : base(Prog)
@@ -184,6 +219,13 @@ namespace Runner
             }
         }
 
+        public override ExprObject Clone(Runing Prog, List<string> Param)
+        {
+            ExprIfgo e = new ExprIfgo(Prog);
+            e.param = Param;
+            return e;
+        }
+
         public ExprIfgo(Runing Prog) : base(Prog)
         {
             name = "ifgo";
@@ -203,6 +245,13 @@ namespace Runner
             {
                 return Except(e);
             }
+        }
+
+        public override ExprObject Clone(Runing Prog, List<string> Param)
+        {
+            ExprReturn e = new ExprReturn(Prog);
+            e.param = Param;
+            return e;
         }
 
         public ExprReturn(Runing Prog) : base(Prog)

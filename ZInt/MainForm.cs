@@ -27,14 +27,31 @@ namespace ZInt
         {
             Console Cons = new Console();
             Cons.Visible = true;
+            string sCode = "#1 in std V0\n"+
+                "#1 ifgo (T1 V0 <=) 3 6\n"+
+                "#1 in std V1.(T1)\n"+
+                "#1 inc T1\n"+
+                "#1 ifgo (T1 V0 <=) 3 6\n"+
+                "#1 set T1 0\n"+
+                "#2 ifgo (T1 V0 <=) 8 11\n"+
+                "#2 set V1.(T1) V0\n"+
+                "#2 inc T1\n"+
+                "#2 ifgo (T1 V0 <=) 8 11\n"+
+                "#2 set T1 0\n"+
+                "#3 ifgo (T1 V0 <=) 13 16\n"+
+                "#3 out std V1.(T1)\n"+
+                "#3 inc T1"+"#3 ifgo (T1 V0 <=) 13 16\n"+
+                "#4 return";
 
-            Runing Run = new Runing(Cons.stdIO);
+            Runing Run = new Runing(Cons.stdIO,sCode.Split('\n').ToList<string>());
             Run.ProcMess += new ProcessMessages(ProcMess);
-            Run.Test();
+            Run.Run();
+            //Run.Test();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            
         } 
 
     }

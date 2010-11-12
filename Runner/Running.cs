@@ -26,8 +26,11 @@ namespace Runner
         public List<VarObject> Var;
         public VarInt Temp;
         protected List<VarObject> Param;
+        protected List<string> Source;
         protected int ParamCount;
         public IO stdIO;
+
+        public List<ExprObject> Expressions;
 
         public bool Halt = false;
         public event ProcessMessages ProcMess;
@@ -42,7 +45,7 @@ namespace Runner
         public VarObject GetVar(string name)
         {
             //Обнаружение скобок и рекуретный вызов GetVar() - заменяем все скобки их значениями
-            if(name.IndexOf('(') != -1)
+            if (name.IndexOf('(') != -1)
             {
                 Regex o = new Regex(@"\((?=[^\(]*\)).*?\)");
                 try
@@ -60,7 +63,7 @@ namespace Runner
             VarObject R;
 
             //Разные типы переменных: V - обычный Var, T - темповая, P - параметр
-            switch(name[0])
+            switch (name[0])
             {
                 case 'V':
                     R = Var[int.Parse(r[0].Value)];
@@ -70,7 +73,7 @@ namespace Runner
 
                     return R;
                 case 'T':
-                     R = Temp;
+                    R = Temp;
 
                     for (int i = 0; i < r.Count; i++)
                         R = R[int.Parse(r[i].Value)];
@@ -359,31 +362,14 @@ namespace Runner
             return null;
         }
 
-        public Runing(IO stdIO)
-        {
-            Var = new List<VarObject>();
-            Temp = new VarInt(0);
-            ParamCount = 0;
-            this.stdIO = stdIO;
-        }
-
-        public Runing(IO stdIO, List<VarObject> Params)
-        {
-            Var = new List<VarObject>();
-            Temp = new VarInt(0);
-            Param = Params;
-            ParamCount = Params.Count;
-            this.stdIO = stdIO;
-        }
-
         public void Test()
         {
             //Проверка работы переменных
             Var.Add(new VarInt(3));
             Var.Add(new VarInt(11));
-            
+
             stdIO.Out("Введите 5(число будет записано в V2):");
-            
+
             //Ввод данных \/ и вывод данных /\
             string s = stdIO.In();
             Var.Add(new VarInt(int.Parse(s)));
@@ -409,16 +395,59 @@ namespace Runner
                     ProcMess();
             }*/
 
-            stdIO.Out("В переменной V0.(V2).(V(V3)): "+GetVar("V0.(V2).(V(V3))").ToStr());
+            stdIO.Out("В переменной V0.(V2).(V(V3)): " + GetVar("V0.(V2).(V(V3))").ToStr());
 
             return;
         }
 
+        //Убрал, т.к. раньше вызывали конструктор без содержимого, которое надо выполнить. А сейчас так ни-ни!
+        //public Runing(IO stdIO)
+        //{
+        //    Var = new List<VarObject>();
+        //    Temp = new VarInt(0);
+        //    ParamCount = 0;
+        //    this.stdIO = stdIO;
+        //}
+
+        public Runing(IO stdIO, List<string> lSource)
+        {
+            Var = new List<VarObject>();
+            Temp = new VarInt(0);
+            FormExprList();
+            Source = lSource;
+            Param = new List<VarObject>();
+            ParamCount = Param.Count;
+            this.stdIO = stdIO;
+        }
+
+        public Runing(IO stdIO, List<string> lSource, List<VarObject> Params)
+        {
+            Var = new List<VarObject>();
+            Temp = new VarInt(0);
+            FormExprList();
+            Source = lSource;
+            Param = Params;
+            ParamCount = Params.Count;
+            this.stdIO = stdIO;
+        }
+
+        private void FormExprList()
+        {
+            Expressions = new List<ExprObject>();
+            Expressions.Add(new ExprIn(null));
+            Expressions.Add(new ExprOut(null));
+            Expressions.Add(new ExprInc(null));
+            Expressions.Add(new ExprIfgo(null));
+            Expressions.Add(new ExprSet(null));
+            Expressions.Add(new ExprReturn(null));
+        }
+
         public void Run()
         {
+            fillLines();
             int Cur = 0;
             bool Err = false;
-            while (Cur <= Lines.Count() && (Err == false))
+            while (Cur < Lines.Count() && (Err == false))
             {
                 Err = (Lines[Cur].Do(ref Cur) != 0);
 
@@ -435,6 +464,34 @@ namespace Runner
             {
                 stdIO.Out(Lines[Cur].Err);
             }
+        }
+
+        private void fillLines()
+        {
+            if (Lines == null) Lines = new List<ExprObject>();
+            Lines.Clear();
+
+            foreach (string s in Source)
+            {
+                Regex o = new Regex(@"(\(.+?\))|(\'.{1}?\')|(\"".*?\"")|([\w=<>]+)");
+                //RegExp, который выделяет выражения в скобках, в одинарных и двойных кавычках, а оставшееся делит на слова (которые состоят из букав и = < >)
+
+                MatchCollection r = o.Matches(s);
+                //r[0] - носер строки кода программы из которой была полученна данная прекомпильная конструкция - т.е. #i
+                List<string> sPar = new List<string>();
+                for (int i = 2; i < r.Count; i++) sPar.Add(r[i].ToString());
+                Lines.Add(CreateExprObj(r[1].ToString(), sPar));
+            }
+        }
+
+        private ExprObject CreateExprObj(string precompName, List<string> sPar)
+        {
+            //если придумаем, тут будет более расширяемая конструкция
+            foreach (ExprObject expr in Expressions)
+            {
+                if (expr.Name == precompName) return expr.Clone(this, sPar);
+            }
+            return new ExprObject(this);
         }
     }
 }
