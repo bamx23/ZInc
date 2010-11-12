@@ -26,6 +26,7 @@ namespace ZInt
 
         private void button1_Click(object sender, EventArgs e)
         {
+            
             Console Cons = new Console();
             Cons.Visible = true;
 
@@ -54,11 +55,6 @@ namespace ZInt
             Cons.CurThread = T;
             T.Start();
         }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            
-        } 
 
     }
 

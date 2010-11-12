@@ -19,6 +19,7 @@ namespace ZInt
         {
             InitializeComponent();
             stdIO = new StdIO(textBox1, richTextBox1);
+            richTextBox1.Clear();
         }
 
         private void haltToolStripMenuItem_Click(object sender, EventArgs e)
