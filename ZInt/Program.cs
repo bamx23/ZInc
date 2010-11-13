@@ -74,9 +74,7 @@ namespace ZInt
             }
             else
             {
-                Input.Enabled = true;
-                Input.Focus();
-                Input.Enabled = true;
+                InFocusDo();
             }
         }
 
@@ -103,10 +101,7 @@ namespace ZInt
             }
             else
             {
-                strText = Input.Text;
-                Input.Enabled = false;
-                Output.Text += ">>" + Input.Text + "\n";
-                Input.Text = "";
+                strText = GetInputText();
             }
             return strText;
         }
@@ -131,8 +126,7 @@ namespace ZInt
             }
             else
             {
-                Output.Text += "<<" + s + "\n";
-                Output.Refresh();
+                AddOutText(s);
             }
         }
     }
