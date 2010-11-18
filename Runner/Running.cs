@@ -151,7 +151,7 @@ namespace Runner
                 }
                 else
                 {
-                    if (s == "+" || s == "-" || s == "*" || s == "/" ||
+                    if (s == "+" || s == "-" || s == "*" || s == "/" || s == "%" ||
                         s == "==" || s == "<" || s == "<=" || s == ">" || s == ">=")
                         ConvertToOneType(operands, s);
                     else
@@ -166,7 +166,7 @@ namespace Runner
                             operands.Push(new VarString(s.Trim('\"', '\"')));
                             continue;
                         }
-                        if (s == "true" || s == "false")
+                        if (s.ToUpper() == "TRUE" || s.ToUpper() == "FALSE")
                         {
                             operands.Push(new VarBool(bool.Parse(s)));
                             continue;
@@ -235,28 +235,28 @@ namespace Runner
         }
         public VarObject DoOperation(VarInt a, VarInt b, string operation)
         {
-            if (operation == "+" || operation == "-" || operation == "*" || operation == "/")
+            if (operation == "+" || operation == "-" || operation == "*" || operation == "/" || operation == "%")
                 return DoArifmeticOperation(a, b, operation);
             else
                 return DoLogicalOperation(a, b, operation);
         }
         public VarObject DoOperation(VarBool a, VarBool b, string operation)
         {
-            if (operation == "+" || operation == "-" || operation == "*" || operation == "/")
+            if (operation == "+" || operation == "-" || operation == "*" || operation == "/" || operation == "%")
                 return DoArifmeticOperation(a, b, operation);
             else
                 return DoLogicalOperation(a, b, operation);
         }
         public VarObject DoOperation(VarDouble a, VarDouble b, string operation)
         {
-            if (operation == "+" || operation == "-" || operation == "*" || operation == "/")
+            if (operation == "+" || operation == "-" || operation == "*" || operation == "/" || operation == "%")
                 return DoArifmeticOperation(a, b, operation);
             else
                 return DoLogicalOperation(a, b, operation);
         }
         public VarObject DoOperation(VarString a, VarString b, string operation)
         {
-            if (operation == "+" || operation == "-" || operation == "*" || operation == "/")
+            if (operation == "+" || operation == "-" || operation == "*" || operation == "/" || operation == "%")
                 return DoArifmeticOperation(a, b, operation);
             else
                 return DoLogicalOperation(a, b, operation);
@@ -274,11 +274,13 @@ namespace Runner
                     return a * b;
                 case "/":
                     return a / b;
+                case "%":
+                    return a % b;
                 default:
                     break;
             }
             return null;
-        }
+        } // А я вот подумал..  А какого фига у меня в кейсах нету брейка? Оно почему то работает, правда я не уверен почему =)
         public VarBool DoArifmeticOperation(VarBool a, VarBool b, string operation)
         {
             switch (operation)
@@ -291,6 +293,8 @@ namespace Runner
                     return a * b;
                 case "/":
                     return a / b;
+                case "%":
+                    return a % b;
                 default:
                     break;
             }
@@ -308,6 +312,8 @@ namespace Runner
                     return a * b;
                 case "/":
                     return a / b;
+                case "%":
+                    return a % b;
                 default:
                     break;
             }
@@ -325,6 +331,8 @@ namespace Runner
                     return a * b;
                 case "/":
                     return a / b;
+                case "%":
+                    return a % b;
                 default:
                     break;
             }

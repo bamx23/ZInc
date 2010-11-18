@@ -3,3 +3,8 @@ D:\01_Documents\ZInc\Experiments\DLLs\MyDLL\MyDll\bin\Debug\MyDll.pdb
 D:\01_Documents\ZInc\Experiments\DLLs\MyDLL\MyDll\obj\Debug\ResolveAssemblyReference.cache
 D:\01_Documents\ZInc\Experiments\DLLs\MyDLL\MyDll\obj\Debug\MyDll.dll
 D:\01_Documents\ZInc\Experiments\DLLs\MyDLL\MyDll\obj\Debug\MyDll.pdb
+f:\Work\Zinc\Experiments\DLLs\MyDLL\MyDll\bin\Debug\MyDll.dll
+f:\Work\Zinc\Experiments\DLLs\MyDLL\MyDll\bin\Debug\MyDll.pdb
+f:\Work\Zinc\Experiments\DLLs\MyDLL\MyDll\obj\Debug\ResolveAssemblyReference.cache
+f:\Work\Zinc\Experiments\DLLs\MyDLL\MyDll\obj\Debug\MyDll.dll
+f:\Work\Zinc\Experiments\DLLs\MyDLL\MyDll\obj\Debug\MyDll.pdb

@@ -3,3 +3,8 @@ D:\01_Documents\ZInc\Experiments\ListMany\bin\Debug\ListMany.pdb
 D:\01_Documents\ZInc\Experiments\ListMany\obj\x86\Debug\ResolveAssemblyReference.cache
 D:\01_Documents\ZInc\Experiments\ListMany\obj\x86\Debug\ListMany.exe
 D:\01_Documents\ZInc\Experiments\ListMany\obj\x86\Debug\ListMany.pdb
+f:\Work\Zinc\Experiments\ListMany\bin\Debug\ListMany.exe
+f:\Work\Zinc\Experiments\ListMany\bin\Debug\ListMany.pdb
+f:\Work\Zinc\Experiments\ListMany\obj\x86\Debug\ResolveAssemblyReference.cache
+f:\Work\Zinc\Experiments\ListMany\obj\x86\Debug\ListMany.exe
+f:\Work\Zinc\Experiments\ListMany\obj\x86\Debug\ListMany.pdb

@@ -37,6 +37,11 @@ namespace ZInt
             CurThread.Abort();
         }
 
+        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
         
     }
 }

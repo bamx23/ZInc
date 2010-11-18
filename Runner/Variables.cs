@@ -209,6 +209,10 @@ namespace Runner
         {
             return new VarInt( (int)(a.data / b.data) );
         }
+        static public VarInt operator %(VarInt a, VarInt b)
+        {
+            return new VarInt((int)(a.data % b.data));
+        }
 
         public VarInt(): base()
         {
@@ -289,6 +293,10 @@ namespace Runner
         {
             return new VarDouble(a.data / b.data);
         }
+        static public VarDouble operator %(VarDouble a, VarDouble b)
+        {
+            return new VarDouble(a.data % b.data);
+        }
 
         public VarDouble() : base()
         {
@@ -320,13 +328,28 @@ namespace Runner
             }
             catch (Exception e)
             {
-                return data.Length;
+                Regex o = new Regex(@"\s*"); // Не уверен что это сработает, нужно проверить =)
+                Match someMatch = o.Match(data);
+                if(someMatch.Success)
+                    return int.Parse(someMatch.Value);
+                return 0;
             }
         }
 
         public override double ToDouble()
         {
-            return double.Parse(data);
+            try
+            {
+                return double.Parse(data);
+            }
+            catch (Exception e)
+            {
+                Regex o = new Regex(@"(\s*|\s*.\s*)"); // Не уверен что это сработает, нужно проверить =)
+                Match someMatch = o.Match(data);
+                if (someMatch.Success)
+                    return double.Parse(someMatch.Value);
+                return 0;
+            }
         }
 
         public override string ToStr()
@@ -376,6 +399,10 @@ namespace Runner
         {
             return new VarString(a.data + b.data);
         }
+        static public VarString operator %(VarString a, VarString b)
+        {
+            return new VarString(a.data + b.data);
+        }
 
         public VarString() : base()
         {
@@ -406,17 +433,17 @@ namespace Runner
 
         public override int ToInt()
         {
-            return data?1:0;
+            return data ? 1 : 0;
         }
 
         public override double ToDouble()
         {
-            return data?1:0;
+            return data ? 1 : 0;
         }
 
         public override string ToStr()
         {
-            return data?"TRUE":"FALSE";
+            return data ? "true" : "false"; // раньше было return data ? "TRUE" : "FALSE"; но мне кажется это не удобно
         }
 
         public override void Parse(string S)
@@ -448,10 +475,10 @@ namespace Runner
         {
             return a.data.ToString().Length >= b.data.ToString().Length;
         }
-        static public VarBool operator +(VarBool a, VarBool b)
+        static public VarBool operator +(VarBool a, VarBool b) // Арифмические действия с булевскими переменнвми соответствуют логическим операциям =) 
         {
             return new VarBool(a.data || b.data);
-        }
+        } 
         static public VarBool operator -(VarBool a, VarBool b)
         {
             return new VarBool(!(a.data || b.data));
@@ -464,6 +491,10 @@ namespace Runner
         {
             return new VarBool(!(a.data && b.data));
         }
+        static public VarBool operator %(VarBool a, VarBool b)
+        {
+            return new VarBool(a.data && !b.data);
+        } 
 
         public VarBool() : base()
         {

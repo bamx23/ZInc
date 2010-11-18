@@ -5,3 +5,10 @@ D:\01_Documents\ZInc\Experiments\DLLs\Runner\bin\Debug\MyDll.dll
 D:\01_Documents\ZInc\Experiments\DLLs\Runner\bin\Debug\MyDll.pdb
 D:\01_Documents\ZInc\Experiments\DLLs\Runner\obj\x86\Debug\Runner.exe
 D:\01_Documents\ZInc\Experiments\DLLs\Runner\obj\x86\Debug\Runner.pdb
+f:\Work\Zinc\Experiments\DLLs\Runner\bin\Debug\Runner.exe
+f:\Work\Zinc\Experiments\DLLs\Runner\bin\Debug\Runner.pdb
+f:\Work\Zinc\Experiments\DLLs\Runner\bin\Debug\MyDll.dll
+f:\Work\Zinc\Experiments\DLLs\Runner\bin\Debug\MyDll.pdb
+f:\Work\Zinc\Experiments\DLLs\Runner\obj\x86\Debug\ResolveAssemblyReference.cache
+f:\Work\Zinc\Experiments\DLLs\Runner\obj\x86\Debug\Runner.exe
+f:\Work\Zinc\Experiments\DLLs\Runner\obj\x86\Debug\Runner.pdb

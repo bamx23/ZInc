@@ -56,7 +56,7 @@ namespace Runner
 
     public class ExprSet : ExprObject
     {
-        public override int Do(ref int Line) // Коля, а чего у тебя только інт возвращается? а если нужен дабл // Где?)) Это номер строки
+        public override int Do(ref int Line) // Коля, а чего у тебя только інт возвращается? а если нужен дабл // Где?)) Это номер строки // А ну да, согласен =)
         {
             try
             {

@@ -49,6 +49,7 @@
             this.richTextBox1.Size = new System.Drawing.Size(531, 249);
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = "";
+            this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
             // 
             // menuStrip1
             // 
@@ -68,20 +69,20 @@
             this.haltToolStripMenuItem,
             this.restartToolStripMenuItem});
             this.programToolStripMenuItem.Name = "programToolStripMenuItem";
-            this.programToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
+            this.programToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
             this.programToolStripMenuItem.Text = "Program";
             // 
             // haltToolStripMenuItem
             // 
             this.haltToolStripMenuItem.Name = "haltToolStripMenuItem";
-            this.haltToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
+            this.haltToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
             this.haltToolStripMenuItem.Text = "Stop";
             this.haltToolStripMenuItem.Click += new System.EventHandler(this.haltToolStripMenuItem_Click);
             // 
             // restartToolStripMenuItem
             // 
             this.restartToolStripMenuItem.Name = "restartToolStripMenuItem";
-            this.restartToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
+            this.restartToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
             this.restartToolStripMenuItem.Text = "Restart";
             this.restartToolStripMenuItem.Click += new System.EventHandler(this.restartToolStripMenuItem_Click);
             // 
