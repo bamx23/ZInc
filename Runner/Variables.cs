@@ -47,6 +47,8 @@ namespace Runner
         public const int INT = 2;
         public const int DOUBLE = 3;
         public const int STRING = 4;
+
+        public const int IO = 100;
     }
 
     public class CodeObject
@@ -60,6 +62,22 @@ namespace Runner
             {
                 return type;
             }
+        }
+    }
+
+    public class SystemObject
+    {
+        public int type;
+        public string name;
+    }
+
+    public class SystemIO : SystemObject
+    {
+        public FileStream file;
+
+        public SystemIO()
+        {
+            type = Constants.IO;
         }
     }
 

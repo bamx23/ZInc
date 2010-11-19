@@ -26,9 +26,11 @@ namespace Runner
     {
         public List<VarObject> Var;
         public VarInt Temp;
+        public List<SystemObject> System;
         protected List<VarObject> Param;
-        protected List<string> Source;
         protected int ParamCount;
+
+        protected List<string> Source;
         public IO stdIO;
 
         public List<ExprObject> Expressions;
@@ -508,7 +510,10 @@ namespace Runner
             Expressions.Add(new ExprIfgo(null));
             Expressions.Add(new ExprSet(null));
             Expressions.Add(new ExprReturn(null));
-            Expressions.Add(new ExprNew(this));
+            Expressions.Add(new ExprNew(null));
+            Expressions.Add(new ExprOpenFile(null));
+            Expressions.Add(new ExprCloseFile(null));
+            Expressions.Add(new ExprFlushFile(null));
         }
 
         public void Run()
@@ -554,7 +559,7 @@ namespace Runner
             {
                 if (expr.Name == precompName) return expr.Clone(this, sPar);
             }
-            return new ExprObject(this);
+            return new ExprObject(this);  //(Коля)норм пока что, но надо будет убрать и всунуть сюда сообщение об ошибке
         }
     }
 }
