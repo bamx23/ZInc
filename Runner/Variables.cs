@@ -346,7 +346,7 @@ namespace Runner
             }
             catch (Exception e)
             {
-                Regex o = new Regex(@"\s*"); // Не уверен что это сработает, нужно проверить =)
+                Regex o = new Regex(@"(\d*[.]\d*)|(\d*)"); // Не уверен что это сработает, нужно проверить =)
                 Match someMatch = o.Match(data);
                 if(someMatch.Success)
                     return int.Parse(someMatch.Value);
@@ -362,7 +362,7 @@ namespace Runner
             }
             catch (Exception e)
             {
-                Regex o = new Regex(@"(\s*|\s*.\s*)"); // Не уверен что это сработает, нужно проверить =)
+                Regex o = new Regex(@"(\d*[.]\d*)|(\d*)"); // Не уверен что это сработает, нужно проверить =)
                 Match someMatch = o.Match(data);
                 if (someMatch.Success)
                     return double.Parse(someMatch.Value);
