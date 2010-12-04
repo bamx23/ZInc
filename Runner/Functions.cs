@@ -16,6 +16,34 @@ namespace Runner
         protected string param1;
         protected string param2;
     }
+    public class StandartFunction  // Changes
+    {
+        public virtual VarObject Do(VarObject Param)
+        {
+            return new VarObject();
+        }
+        public string Name
+        {
+            get { return name; }
+        }
+        public StandartFunction()
+        {
+        }
+        public string Err;
+        protected string name;
+    }
+    public class FuncSin : StandartFunction
+    {
+        public FuncSin()
+        {
+            name = "sin";
+        }
+        public override VarObject Do(VarObject Param)
+        {
+            return new VarDouble(Math.Sin(Param[0].ToDouble()));
+        }
+    } // Changes
+
     public class ExprObject
     {
         protected string name;
@@ -308,103 +336,15 @@ namespace Runner
         }
     }
 
-    //Ниже идут пока просто заглушки для файловых операций
-
-    public class ExprOpenFile : ExprObject
-    {
-        public override int Do(ref int Line)
-        {
-            try
-            {
-                // CODE
-                return base.Do(ref Line);
-            }
-            catch (Exception e)
-            {
-                return Except(e);
-            }
-        }
-
-        public ExprOpenFile(Runing Prog)
-            : base(Prog)
-        {
-            name = "openfile";
-        }
-
-        public override ExprObject Clone(Runing Prog, List<string> Param)
-        {
-            ExprOpenFile e = new ExprOpenFile(Prog);
-            e.param = Param;
-            return e;
-        }
-    }
-
-    public class ExprCloseFile : ExprObject
-    {
-        public override int Do(ref int Line)
-        {
-            try
-            {
-                // CODE
-                return base.Do(ref Line);
-            }
-            catch (Exception e)
-            {
-                return Except(e);
-            }
-        }
-
-        public ExprCloseFile(Runing Prog)
-            : base(Prog)
-        {
-            name = "closefile";
-        }
-
-        public override ExprObject Clone(Runing Prog, List<string> Param)
-        {
-            ExprCloseFile e = new ExprCloseFile(Prog);
-            e.param = Param;
-            return e;
-        }
-    }
-
-    public class ExprFlushFile : ExprObject
-    {
-        public override int Do(ref int Line)
-        {
-            try
-            {
-                // CODE
-                return base.Do(ref Line);
-            }
-            catch (Exception e)
-            {
-                return Except(e);
-            }
-        }
-
-        public ExprFlushFile(Runing Prog)
-            : base(Prog)
-        {
-            name = "flushfile";
-        }
-
-        public override ExprObject Clone(Runing Prog, List<string> Param)
-        {
-            ExprFlushFile e = new ExprFlushFile(Prog);
-            e.param = Param;
-            return e;
-        }
-    }
+       
 }
 
-/* public class Expr___ : ExprObject
-    {
-        public override int Do(ref int Line)
+
+/* public override int Do(ref int Line)
         {
             try
             {
-                // CODE
+                // CODE over here
                 return base.Do(ref Line);
             }
             catch (Exception e)
@@ -412,18 +352,4 @@ namespace Runner
                 return Except(e);
             }
         }
-
-        public Expr___(Runing Prog)
-            : base(Prog)
-        {
-            name = "";
-        }
-
-        public override ExprObject Clone(Runing Prog, List<string> Param)
-        {
-            Expr___ e = new Expr___(Prog);
-            e.param = Param;
-            return e;
-        }
-    }
- * */
+*/

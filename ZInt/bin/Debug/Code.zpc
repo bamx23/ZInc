@@ -2,6 +2,7 @@
 #0 new int
 #1 out std "Enter_x:"
 #1 in std V0
+#1 out std sin(V0)
 #1 ifgo (T1 V0 <) 6 10
 #1 out std "Enter_y[i]:"
 #1 in std V1.[T1]

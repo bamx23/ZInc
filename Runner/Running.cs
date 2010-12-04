@@ -26,14 +26,13 @@ namespace Runner
     {
         public List<VarObject> Var;
         public VarInt Temp;
-        public List<SystemObject> System;
         protected List<VarObject> Param;
-        protected int ParamCount;
-
         protected List<string> Source;
+        protected int ParamCount;
         public IO stdIO;
 
         public List<ExprObject> Expressions;
+        static public List<StandartFunction> Functions;  // Changes
 
         public bool Halt = false;
         public event ProcessMessages ProcMess;
@@ -95,41 +94,42 @@ namespace Runner
         }
         public int GetValInt(string name)
         {
-            if (name[0] == '(')
-            {
-                name = name.Remove(0, 1);
-                name = name.Remove(name.Length - 1, 1);
-            }
             return ParseString(name).ToInt();
         } // "getVal второй параметр ссылка на переменную куда мы запишем результат" можно и так переделать это не сложно, если будет удобнее скажите, сделаю, ну или сами потужтесь
         public bool GetValBool(string name)
         {
-            if (name[0] == '(')
-            {
-                name = name.Remove(0, 1);
-                name = name.Remove(name.Length - 1, 1);
-            }
             return ParseString(name).ToBool();
         }
         public double GetValDouble(string name)
         {
-            if (name[0] == '(')
-            {
-                name = name.Remove(0, 1);
-                name = name.Remove(name.Length - 1, 1);
-            }
             return ParseString(name).ToDouble();
         }
         public string GetValString(string name)
         {
             //name = name.Trim('(', ')'); // Плохо! В (V1.(V2)) -> V1.(V2 =)
-            if (name[0] == '(')
-            {
-                name = name.Remove(0, 1);
-                name = name.Remove(name.Length - 1, 1);
-            }
             return ParseString(name).ToStr();
         }
+        protected bool TryParseStandartFunc(string s, ref VarObject res) // Changes
+        {
+            Regex o = new Regex(@"(.+\(.*\))");
+            bool flag = false;
+            int i;
+            if (o.IsMatch(s))
+                return false;
+            string subStr = s.Substring(0, s.IndexOf('('));
+            for (i = 0; i < Functions.Count; ++i)
+            {
+                if (subStr == Functions[i].Name)
+                {
+                    flag = true;
+                    break;
+                }
+            }
+            if (!flag)
+                return false;
+            res = Functions[i].Do(ParseString(s));
+            return true;
+        } // Changes
         /// <summary>
         /// Самым непосредственным образом парсит строку записанную польской записью =)
         /// </summary>
@@ -138,7 +138,13 @@ namespace Runner
         public VarObject ParseString(string name)
         {
             Stack<VarObject> operands = new Stack<VarObject>();
+            VarObject tempVar = new VarObject();
             string[] literal = name.Split(' ');
+            if (name[0] == '(') // Changes
+            {
+                name = name.Remove(0, 1);
+                name = name.Remove(name.Length - 1, 1);
+            } // Changes
             foreach (string s in literal)
             {
                 if (s[0] == 'V' || s[0] == 'P' || s[0] == 'T')
@@ -153,7 +159,7 @@ namespace Runner
                 }
                 else
                 {
-                    if (s == "+" || s == "-" || s == "*" || s == "/" || s == "%" ||
+                    if (s == "+" || s == "-" || s == "*" || s == "/" ||
                         s == "==" || s == "<" || s == "<=" || s == ">" || s == ">=")
                         ConvertToOneType(operands, s);
                     else
@@ -168,7 +174,12 @@ namespace Runner
                             operands.Push(new VarString(s.Trim('\"', '\"')));
                             continue;
                         }
-                        if (s.ToUpper() == "TRUE" || s.ToUpper() == "FALSE")
+                        if (TryParseStandartFunc(s, ref tempVar))  // Changes
+                        {
+                            operands.Push(tempVar);
+                            continue;
+                        }  // Changes
+                        if (s == "true" || s == "false")
                         {
                             operands.Push(new VarBool(bool.Parse(s)));
                             continue;
@@ -510,10 +521,7 @@ namespace Runner
             Expressions.Add(new ExprIfgo(null));
             Expressions.Add(new ExprSet(null));
             Expressions.Add(new ExprReturn(null));
-            Expressions.Add(new ExprNew(null));
-            Expressions.Add(new ExprOpenFile(null));
-            Expressions.Add(new ExprCloseFile(null));
-            Expressions.Add(new ExprFlushFile(null));
+            Expressions.Add(new ExprNew(this));
         }
 
         public void Run()
@@ -559,7 +567,7 @@ namespace Runner
             {
                 if (expr.Name == precompName) return expr.Clone(this, sPar);
             }
-            return new ExprObject(this);  //(Коля)норм пока что, но надо будет убрать и всунуть сюда сообщение об ошибке
+            return new ExprObject(this);
         }
     }
 }
